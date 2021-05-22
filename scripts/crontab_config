@@ -1,0 +1,1 @@
+0 * * * * /opt/anaconda3/envs/hp/bin/python /Users/adityarotti/Documents/Personal/Finances/crypto_analyser/scripts/run_crypto_update.py > /Users/adityarotti/Documents/Personal/Finances/crypto_analyser/scripts/cron.log 2>&1

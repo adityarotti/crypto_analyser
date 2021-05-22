@@ -1,0 +1,84 @@
+[0522/130038.512192:ERROR:xattr.cc(63)] setxattr org.chromium.crashpad.database.initialized on file /var/folders/lc/t_r4v4v95jz6kd9rqdy07rvc0000gn/T/: Operation not permitted (1)
+[0522/130038.514320:ERROR:file_io.cc(91)] ReadExactly: expected 8, observed 0
+[0522/130038.516090:ERROR:xattr.cc(63)] setxattr org.chromium.crashpad.database.initialized on file /var/folders/lc/t_r4v4v95jz6kd9rqdy07rvc0000gn/T/: Operation not permitted (1)
+[0522/130038.600865:WARNING:headless_browser_main_parts.cc(83)] Cannot create Pref Service with no user data dir.
+[0522/130039.402773:INFO:headless_shell.cc(620)] Written to file /tmp/tmp577zkw12/temp.png.
+[0522/130039.776000:ERROR:xattr.cc(63)] setxattr org.chromium.crashpad.database.initialized on file /var/folders/lc/t_r4v4v95jz6kd9rqdy07rvc0000gn/T/: Operation not permitted (1)
+[0522/130039.779206:ERROR:file_io.cc(91)] ReadExactly: expected 8, observed 0
+[0522/130039.781619:ERROR:xattr.cc(63)] setxattr org.chromium.crashpad.database.initialized on file /var/folders/lc/t_r4v4v95jz6kd9rqdy07rvc0000gn/T/: Operation not permitted (1)
+[0522/130039.853319:WARNING:headless_browser_main_parts.cc(83)] Cannot create Pref Service with no user data dir.
+[0522/130040.758348:INFO:headless_shell.cc(620)] Written to file /tmp/tmpypujpwob/temp.png.
+Traceback (most recent call last):
+  File "/opt/anaconda3/envs/hp/lib/python3.7/site-packages/telegram/vendor/ptb_urllib3/urllib3/connectionpool.py", line 402, in _make_request
+    six.raise_from(e, None)
+  File "<string>", line 2, in raise_from
+  File "/opt/anaconda3/envs/hp/lib/python3.7/site-packages/telegram/vendor/ptb_urllib3/urllib3/connectionpool.py", line 398, in _make_request
+    httplib_response = conn.getresponse()
+  File "/opt/anaconda3/envs/hp/lib/python3.7/http/client.py", line 1369, in getresponse
+    response.begin()
+  File "/opt/anaconda3/envs/hp/lib/python3.7/http/client.py", line 310, in begin
+    version, status, reason = self._read_status()
+  File "/opt/anaconda3/envs/hp/lib/python3.7/http/client.py", line 271, in _read_status
+    line = str(self.fp.readline(_MAXLINE + 1), "iso-8859-1")
+  File "/opt/anaconda3/envs/hp/lib/python3.7/socket.py", line 589, in readinto
+    return self._sock.recv_into(b)
+  File "/opt/anaconda3/envs/hp/lib/python3.7/ssl.py", line 1071, in recv_into
+    return self.read(nbytes, buffer)
+  File "/opt/anaconda3/envs/hp/lib/python3.7/ssl.py", line 929, in read
+    return self._sslobj.read(len, buffer)
+socket.timeout: The read operation timed out
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/opt/anaconda3/envs/hp/lib/python3.7/site-packages/telegram/utils/request.py", line 253, in _request_wrapper
+    resp = self._con_pool.request(*args, **kwargs)
+  File "/opt/anaconda3/envs/hp/lib/python3.7/site-packages/telegram/vendor/ptb_urllib3/urllib3/request.py", line 70, in request
+    **urlopen_kw)
+  File "/opt/anaconda3/envs/hp/lib/python3.7/site-packages/telegram/vendor/ptb_urllib3/urllib3/request.py", line 148, in request_encode_body
+    return self.urlopen(method, url, **extra_kw)
+  File "/opt/anaconda3/envs/hp/lib/python3.7/site-packages/telegram/vendor/ptb_urllib3/urllib3/poolmanager.py", line 244, in urlopen
+    response = conn.urlopen(method, u.request_uri, **kw)
+  File "/opt/anaconda3/envs/hp/lib/python3.7/site-packages/telegram/vendor/ptb_urllib3/urllib3/connectionpool.py", line 666, in urlopen
+    _stacktrace=sys.exc_info()[2])
+  File "/opt/anaconda3/envs/hp/lib/python3.7/site-packages/telegram/vendor/ptb_urllib3/urllib3/util/retry.py", line 347, in increment
+    raise six.reraise(type(error), error, _stacktrace)
+  File "/opt/anaconda3/envs/hp/lib/python3.7/site-packages/telegram/vendor/ptb_urllib3/urllib3/packages/six.py", line 686, in reraise
+    raise value
+  File "/opt/anaconda3/envs/hp/lib/python3.7/site-packages/telegram/vendor/ptb_urllib3/urllib3/connectionpool.py", line 617, in urlopen
+    chunked=chunked)
+  File "/opt/anaconda3/envs/hp/lib/python3.7/site-packages/telegram/vendor/ptb_urllib3/urllib3/connectionpool.py", line 405, in _make_request
+    exc_cls=ReadTimeoutError)
+  File "/opt/anaconda3/envs/hp/lib/python3.7/site-packages/telegram/vendor/ptb_urllib3/urllib3/connectionpool.py", line 321, in _raise_timeout
+    raise exc_cls(*args)
+telegram.vendor.ptb_urllib3.urllib3.exceptions.ReadTimeoutError: HTTPSConnectionPool(host='api.telegram.org', port=443): Read timed out. (read timeout=20)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/adityarotti/Documents/Personal/Finances/crypto_analyser/scripts/../modules/mytelebot.py", line 127, in broadcast_cryptoupdate
+    self.bot.send_photo(chat_id=chid,photo=open(latest_file,"rb"))
+  File "/opt/anaconda3/envs/hp/lib/python3.7/site-packages/telegram/bot.py", line 127, in decorator
+    result = func(*args, **kwargs)
+  File "/opt/anaconda3/envs/hp/lib/python3.7/site-packages/telegram/bot.py", line 669, in send_photo
+    api_kwargs=api_kwargs,
+  File "/opt/anaconda3/envs/hp/lib/python3.7/site-packages/telegram/bot.py", line 296, in _message
+    result = self._post(endpoint, data, timeout=timeout, api_kwargs=api_kwargs)
+  File "/opt/anaconda3/envs/hp/lib/python3.7/site-packages/telegram/bot.py", line 260, in _post
+    f'{self.base_url}/{endpoint}', data=data, timeout=effective_timeout
+  File "/opt/anaconda3/envs/hp/lib/python3.7/site-packages/telegram/utils/request.py", line 348, in post
+    result = self._request_wrapper('POST', url, fields=data, **urlopen_kwargs)
+  File "/opt/anaconda3/envs/hp/lib/python3.7/site-packages/telegram/utils/request.py", line 255, in _request_wrapper
+    raise TimedOut() from error
+telegram.error.TimedOut: Timed out
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/adityarotti/Documents/Personal/Finances/crypto_analyser/scripts/run_crypto_update.py", line 19, in <module>
+    send_crypto_updates()
+  File "/Users/adityarotti/Documents/Personal/Finances/crypto_analyser/scripts/run_crypto_update.py", line 16, in send_crypto_updates
+    mybot.broadcast_cryptoupdate()
+  File "/Users/adityarotti/Documents/Personal/Finances/crypto_analyser/scripts/../modules/mytelebot.py", line 131, in broadcast_cryptoupdate
+    usrmsg=usrmsg + self.bot_sbs.subscriber_dict[chid]["last_name"]
+TypeError: can only concatenate str (not "NoneType") to str
