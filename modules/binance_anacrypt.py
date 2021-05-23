@@ -19,6 +19,7 @@ def gen_pandas_crypt_table(coinpair_list,interval_list,attr_list=attr_list,rsi_t
 	cryptstat=get_crypto_dict(coinpair_list,interval_list)
 	stat=collections.OrderedDict()
 	stat["coinpair"]=[]
+	stat["cval"]=[]
 	stat["stat"]=[]
 	for lst in interval_list:
 		stat[lst]=[]
@@ -27,40 +28,45 @@ def gen_pandas_crypt_table(coinpair_list,interval_list,attr_list=attr_list,rsi_t
 	for coinpair in np.sort(coinpair_list):
 		for attr in attr_list:
 			stat["coinpair"]=stat["coinpair"] + [coinpair]
+			stat["cval"]=stat["cval"] + [str(cryptstat[coinpair]["cval"])]
 			stat["stat"]=stat["stat"]+[attr]
 			for intr in interval_list:
 				stat[intr]=stat[intr] + [cryptstat[coinpair][intr][attr]]
 
 	pd.set_option('precision', 3)
 	buysell=pd.DataFrame(stat)
-	buysell.set_index(["coinpair","stat"],inplace=True)
+	buysell.set_index(["coinpair","cval","stat"],inplace=True)
 	buysell=buysell.applymap(lambda x: "+"+str(round(x,3)) if isinstance(x,float) and x>0 else x)
 	buysell=buysell.style.applymap(_color_red_or_green)
 
 
 	timestamp_local=str(datetime.datetime.now())
 	timestamp_local=timestamp_local.replace(":","-")
+	date_stamp=timestamp_local[:10]
 
 	timestamp_ind = str(datetime.datetime.now(pytz.timezone('Asia/Calcutta')))
 	timestamp_ind=timestamp_ind.replace(":","-")
 
 	caption="Binance : " + timestamp_local[:-10]  + " " + time.tzname[0] + " / " + timestamp_ind[:-16][11:] + " IST"
 	buysell=buysell.set_caption(caption)
-	filename=path_to_this_file + "/../outdata/buysell_idicator_" + timestamp_local[:-10].replace(" ","_") + ext
+
+	outpath=path_to_this_file + "/../outdata/" + date_stamp + "/"
+	ensure_dir(outpath)
+	filename=outpath + "/buysell_idicator_" + timestamp_local[:-10].replace(" ","_") + ext
 	#dfi.export(buysell,filename,table_conversion='matplotlib')
 	dfi.export(buysell,filename,chrome_path=None)
 	#dfi.export(buysell,filename,chrome_path='/Applications/Google Chrome Canary.app/Contents/MacOS/')
 
 	if movie_fmt=="mp4":
-		gen_mp4()
+		gen_mp4(figpath=outpath)
 	else:
-		gen_gif()
+		gen_gif(figpath=outpath)
 
 def _color_red_or_green(val):
 	if isinstance(val, str):
-		if val.upper() =="SELL":
+		if "SELL" in val.upper():
 				color = 'red'
-		elif val.upper()=="BUY":
+		elif "BUY" in val.upper():
 				color = 'green'
 		elif val.upper()=="NA":
 				color = 'gray'
@@ -77,14 +83,17 @@ def _color_red_or_green(val):
 			color = "cyan"
 	return 'background-color: %s' % color
 
-def gen_gif():
+def gen_gif(figpath):
 	'''
 	Compares the latest statistics with one compared in the prior evaluation
 	'''
-	list_of_files = glob.glob(path_to_this_file + "/../outdata/" + "/*")
+	list_of_files = glob.glob(figpath + "/*")
 	list_of_files = [f for f in list_of_files if "gif" not in f]
 	new_file = max(list_of_files, key=os.path.getctime)
 
+	gifpath=figpath + "/gif/" ; ensure_dir(gifpath)
+	outfile=gifpath + "compare_crypto_stat.gif"
+	
 	if len(list_of_files) >=2:
 		list_of_files.remove(new_file)
 		old_file=max(list_of_files, key=os.path.getctime)
@@ -92,23 +101,25 @@ def gen_gif():
 		images = []
 		for filename in [new_file,old_file]:
 			images.append(imageio.imread(filename))
-			imageio.mimsave(path_to_this_file + "/../outdata/gif/" + '/compare_crypto_stat.gif', images, fps=1.1)
+			imageio.mimsave(outfile, images, fps=1.1)
 	#		os.system("rm " + old_file)
 	else:
 		images = []
 		for filename in [new_file,new_file]:
 			images.append(imageio.imread(filename))
-			imageio.mimsave(path_to_this_file + "/../outdata/gif/" + '/compare_crypto_stat.gif', images, fps=1.1)
+			imageio.mimsave(outfile, images, fps=1.1)
 
-def gen_mp4():
+def gen_mp4(figpath):
 	'''
 	Compares the latest statistics with one compared in the prior evaluation
 	'''
-	list_of_files = glob.glob(path_to_this_file + "/../outdata/*")
+	list_of_files = glob.glob(figpath + "/*")
 	list_of_files = [f for f in list_of_files if "gif" not in f]
 	new_file = max(list_of_files, key=os.path.getctime)
 	
-	outfile=path_to_this_file + "/../outdata/gif/compare_crypto_stat.mp4"
+	gifpath=figpath + "/gif/" ; ensure_dir(gifpath)
+	outfile=gifpath + "compare_crypto_stat.mp4"
+	
 	w = imageio.get_writer(outfile, format='FFMPEG', mode='I', fps=1.3,
 						codec='h264_vaapi',
 						output_params=['-vaapi_device',
@@ -146,6 +157,7 @@ def get_crypto_dict(coinpair_list,interval_list,rsi_thr=[30.,70.]):
 									"EMA7 sl":crypto_ts.ema7_sl,
 									"EMA15 sl":crypto_ts.ema15_sl,
 									"EMA30 sl":crypto_ts.ema30_sl}
+				cryptstat[coinpair]["cval"]=crypto_ts.cval
 			except:
 	#				 print("Failed for " + coinpair + " at " + intr)
 				cryptstat[coinpair][intr]={"RSI":"NA",
@@ -154,6 +166,7 @@ def get_crypto_dict(coinpair_list,interval_list,rsi_thr=[30.,70.]):
 										"EMA7 sl":"NA",
 										"EMA15 sl":"NA",
 										"EMA30 sl":"NA"}
+				cryptstat[coinpair]["cval"]="NA"
 	return cryptstat
 
 class get_eval_crypto_stat(object):
@@ -232,7 +245,7 @@ class get_eval_crypto_stat(object):
 
 	def get_stat_recommendation(self,rsi_thr=[30.,70.]):
 		self.macd_zone,self.macd_buysell=macd_indicator(self.dataframe)
-		self.rsi_zone,self.rsi_buysell=rsi_indicator(self.dataframe,rsi_thr)
+		self.rsi_zone,self.rsi_buysell,self.rsi_buy_str,self.rsi_sell_str=rsi_indicator(self.dataframe,rsi_thr)
 		
 		self.zone="HOLD"
 		if self.macd_zone=="Buy" and self.rsi_zone=="Buy":
@@ -242,9 +255,9 @@ class get_eval_crypto_stat(object):
 		
 		self.buysell="HOLD"
 		if self.macd_buysell=="Buy" and self.rsi_buysell=="Buy":
-			self.buysell="BUY"
+			self.buysell="BUY" + "[" + str(round(self.rsi_buy_str,1)) + "]"
 		if self.macd_buysell=="Sell" and self.rsi_buysell=="Sell":
-			self.buysell="SELL"
+			self.buysell="SELL" + "[" + str(round(self.rsi_sell_str,1)) + "]"
 		
 		self.ema7_sl=np.diff(np.array(self.dataframe["EMA7"]))[-2]*100/np.abs(self.dataframe["EMA30"].iloc[-2])
 		self.ema15_sl=np.diff(np.array(self.dataframe["EMA15"]))[-2]*100/np.abs(self.dataframe["EMA30"].iloc[-2])
@@ -252,25 +265,33 @@ class get_eval_crypto_stat(object):
 		# This is dummy, normalized by EMA60. Need to clean up or revise.
 		self.ema30_sl=np.diff(np.array(self.dataframe["EMA30"]))[-2]*100/np.abs(self.dataframe["EMA90"].iloc[-2])
 
+		self.cval=self.dataframe["Close"].iloc[-1]
+
 def rsi_indicator(dataframe,rsi_thr=[30.,70.]):
 	rsi=np.array(dataframe["RSI"])
 	smooth_rsi=np.array(pd.Series.ewm(dataframe["RSI"], span=9).mean())
 	df = np.diff(smooth_rsi)
 	#	df = np.diff(rsi)
 
-
 	buysell="Hold"
 	zone="Hold"
+	# This number is supposed to indicate how strong the buy sell signal is
+	buy_strength=0.
+	sell_strength=0.
 	if rsi[-2]>rsi_thr[1]:
 		zone="Sell"
+		# Setting max to 85 amplifies the sell signal.
+		sell_strength=(rsi[-2]-rsi_thr[1])/(85.-rsi_thr[1])
 		if df[-2]<0:
 			buysell="Sell"
 	elif rsi[-2]<rsi_thr[0]:
 		zone="Buy"
+		# Setting max to 15 amplifies the buy signal.
+		buy_strength=(rsi_thr[0]-rsi[-2])/(rsi_thr[0]-15.)
 		if df[-2]>0:
 			buysell="Buy"
 
-	return buysell,zone
+	return buysell,zone,buy_strength,sell_strength
 
 def macd_indicator(dataframe):
 	macd=np.array(dataframe["MACD"])
@@ -322,3 +343,8 @@ def url_build(symbol="XRPUSDT", interval="1m"):
     url_endpoint = "/api/v1/klines"
     url_final = url_base + url_endpoint + "?symbol={}&interval={}".format(symbol,interval)
     return url_final
+
+def ensure_dir(file_path):
+    directory = os.path.dirname(file_path)
+    if not os.path.exists(directory):
+        os.makedirs(directory)

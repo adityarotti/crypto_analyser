@@ -119,12 +119,13 @@ class init_mybot(object):
 			user_id_list=[x for x in self.bot_sbs.subscriber_dict.keys() if x in [1709448407,449208196]]
 		else:
 			user_id_list=self.bot_sbs.subscriber_dict.keys()
-
+		print(latestfile)
+		crypstatpng=open(latest_file,"rb")
 		for chid in user_id_list:
 			# This will only fail if the user has unsubscribed from the bot.
 			# So remove the chid from the subscriber database.
 			try:
-				self.bot.send_photo(chat_id=chid,photo=open(latest_file,"rb"))
+				self.bot.send_photo(chat_id=chid,photo=crypstatimg)
 				#self.bot.send_animation(chat_id=chid,animation=open(latest_file,"rb"))
 			except:
 				usrmsg=self.bot_sbs.subscriber_dict[chid]["first_name"] + " "
