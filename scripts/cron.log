@@ -1,10 +1,5 @@
-[0523/130119.713603:ERROR:xattr.cc(63)] setxattr org.chromium.crashpad.database.initialized on file /var/folders/lc/t_r4v4v95jz6kd9rqdy07rvc0000gn/T/: Operation not permitted (1)
-[0523/130119.716485:ERROR:file_io.cc(91)] ReadExactly: expected 8, observed 0
-[0523/130119.718651:ERROR:xattr.cc(63)] setxattr org.chromium.crashpad.database.initialized on file /var/folders/lc/t_r4v4v95jz6kd9rqdy07rvc0000gn/T/: Operation not permitted (1)
-[0523/130119.793439:WARNING:headless_browser_main_parts.cc(83)] Cannot create Pref Service with no user data dir.
-[0523/130120.509033:INFO:headless_shell.cc(620)] Written to file /tmp/tmpir659wga/temp.png.
-[0523/130120.891225:ERROR:xattr.cc(63)] setxattr org.chromium.crashpad.database.initialized on file /var/folders/lc/t_r4v4v95jz6kd9rqdy07rvc0000gn/T/: Operation not permitted (1)
-[0523/130120.893871:ERROR:file_io.cc(91)] ReadExactly: expected 8, observed 0
-[0523/130120.896313:ERROR:xattr.cc(63)] setxattr org.chromium.crashpad.database.initialized on file /var/folders/lc/t_r4v4v95jz6kd9rqdy07rvc0000gn/T/: Operation not permitted (1)
-[0523/130120.973667:WARNING:headless_browser_main_parts.cc(83)] Cannot create Pref Service with no user data dir.
-[0523/130121.891785:INFO:headless_shell.cc(620)] Written to file /tmp/tmpouf1rpsl/temp.png.
+[0524/120111.637972:ERROR:xattr.cc(63)] setxattr org.chromium.crashpad.database.initialized on file /var/folders/lc/t_r4v4v95jz6kd9rqdy07rvc0000gn/T/: Operation not permitted (1)
+[0524/120111.639368:ERROR:file_io.cc(91)] ReadExactly: expected 8, observed 0
+[0524/120111.640438:ERROR:xattr.cc(63)] setxattr org.chromium.crashpad.database.initialized on file /var/folders/lc/t_r4v4v95jz6kd9rqdy07rvc0000gn/T/: Operation not permitted (1)
+[0524/120111.710970:WARNING:headless_browser_main_parts.cc(83)] Cannot create Pref Service with no user data dir.
+[0524/120112.553970:INFO:headless_shell.cc(620)] Written to file /tmp/tmpnzf801us/temp.png.

@@ -4,8 +4,8 @@ from modules import binance_anacrypt
 from modules import mytelebot
 
 #interval_list=["15m","30m","1h","2h","6h","12h","1d","3d","1w","1M"]
-interval_list=["1h","2h","6h","1d","3d","1w","1M"]
-coinlist=["BTCUSDT","ETHEUR","MATICUSDT","ADAUSDT","XLMUSDT","SOLUSDT","XRPEUR","DOGEUSDT","YFIEUR","LTCUSDT"]
+interval_list=["5m","15m","1h","2h","6h","1d","3d"]
+coinlist=["BTCUSDT","ETHEUR","MATICUSDT","ADAUSDT","XLMUSDT","SOLUSDT","XRPEUR","DOGEUSDT"]#,"YFIEUR","LTCUSDT"]
 attr_list=["EMA7 sl","EMA15 sl","Recmnd>>"]
 
 

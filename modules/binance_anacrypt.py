@@ -202,6 +202,7 @@ class get_eval_crypto_stat(object):
 		self.dataframe["SL"]=pd.Series.ewm(self.dataframe["MACD"], span=9).mean() # Signal line
 		
 		self.dataframe["RSI"]=calc_rsi(self.dataframe)
+		self.dataframe=calc_bollinger(self.dataframe,period=21)
 
 	def make_candle_stick_plot(self,):
 		import plotly.graph_objects as go
@@ -214,7 +215,10 @@ class get_eval_crypto_stat(object):
 			go.Scatter(x=self.dataframe['Open time'], y=self.dataframe["EMA7"],line=dict(color='black', width=2),name='EMA7'),
 			go.Scatter(x=self.dataframe['Open time'], y=self.dataframe["EMA30"],line=dict(color='blue', width=2),name='EMA30'),
 			go.Scatter(x=self.dataframe['Open time'], y=self.dataframe["EMA90"],line=dict(color='magenta', width=2),name='EMA90'),
-			go.Scatter(x=self.dataframe['Open time'], y=self.dataframe["EMA200"],line=dict(color='red', width=2),name='EMA200')
+			go.Scatter(x=self.dataframe['Open time'], y=self.dataframe["EMA200"],line=dict(color='red', width=2),name='EMA200'),
+			#go.Scatter(x=self.dataframe['Open time'], y=self.dataframe["MA-TP"],line=dict(color='black', width=2),name='MA-TP 21'),
+			go.Scatter(x=self.dataframe['Open time'], y=self.dataframe["BOLLU"],line=dict(color='black', width=2),name='BOLL-U 21'),
+			go.Scatter(x=self.dataframe['Open time'], y=self.dataframe["BOLLD"],line=dict(color='black', width=2),name='BOLL-D 21')
 			])
 		fig.update_layout(xaxis_rangeslider_visible=False,title_text=self.curpair,title_x=0.5,title_y=0.9)
 		fig.show()
@@ -337,6 +341,14 @@ def calc_rsi(df, periods = 14, ema = True):
     rsi = ma_up / ma_down
     rsi = 100 - (100/(1 + rsi))
     return rsi
+
+def calc_bollinger(df,period=21):
+	df["TP"]=(df["High"] + df["Low"] + df["Close"])/3.
+	df["STD"]=df["TP"].rolling(period).std(ddof=0)
+	df["MA-TP"]=df["TP"].rolling(period).mean()
+	df["BOLLU"]=df["MA-TP"] + 2.*df["STD"]
+	df["BOLLD"]=df["MA-TP"] - 2.*df["STD"]
+	return df
 
 def url_build(symbol="XRPUSDT", interval="1m"):
     url_base = "https://api.binance.com"
