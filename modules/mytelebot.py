@@ -55,7 +55,7 @@ class open_subscribers_log_book(object):
 class init_mybot(object):
 	def __init__(self,test=True):
 		self.test=test
-		mybot_token='1830317963:AAHfNXCtE5PyopjJk7a_Jzov5X8SkGB7iK0'
+		mybot_token='XYZ'
 		self.bot=telegram.Bot(token=mybot_token)
 		self.bot_sbs=open_subscribers_log_book()
 		self.bot_init_file=path_to_this_file + "/../userdata/bot_init.txt"
